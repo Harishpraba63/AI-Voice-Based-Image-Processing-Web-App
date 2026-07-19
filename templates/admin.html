@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | AI Image Processor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
+        <div class="sidebar-logo">AI Processor</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('dashboard') }}"><span>⚡</span> Dashboard</a></li>
+            <li><a href="{{ url_for('admin_dashboard') }}" class="active"><span>🛡️</span> Admin Panel</a></li>
+            <li><a href="#" data-action="open-settings"><span>⚙️</span> Settings</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p class="muted">Admin • Version 2.0</p>
+        </div>
+    </aside>
+
+    <!-- Mobile overlay (tap to close sidebar) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" hidden></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="icon-btn sidebar-toggle" id="sidebarToggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+                    <span class="hamburger" aria-hidden="true"></span>
+                </button>
+                <div class="title-wrap">
+                    <h1>Admin Dashboard</h1>
+                    <p class="muted topbar-subtitle">Manage users and files</p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="user-chip" aria-label="User">
+                    <span class="user-avatar" aria-hidden="true">{{ (username[:1] | upper) if username else 'U' }}</span>
+                    <span class="user-info">Welcome, {{ username }}</span>
+                </div>
+                <a class="btn-outline" href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </header>
+
+        <main class="dashboard-grid admin-grid">
+            <section class="card">
+                <h2>Registered Users</h2>
+                <ul class="list">
+                    {% for user in users %}
+                        <li class="list-item">
+                            <span>{{ user }}</span>
+                            <button class="danger-btn delete-user-btn" data-username="{{ user }}">Delete</button>
+                        </li>
+                    {% else %}
+                        <li class="list-empty">No users yet.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>Uploaded Images</h2>
+                <ul class="list">
+                    {% for img in uploaded_images %}
+                        <li class="list-item">
+                            <a href="{{ url_for('serve_upload', filename=img) }}" target="_blank">{{ img }}</a>
+                            <button class="danger-btn delete-image-btn" data-folder="uploads" data-filename="{{ img }}">Delete</button>
+                        </li>
+                    {% else %}
+                        <li class="list-empty">No uploaded images.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>Processed Images</h2>
+                <ul class="list">
+                    {% for img in processed_images %}
+                        <li class="list-item">
+                            <a href="{{ url_for('serve_processed', filename=img) }}" target="_blank">{{ img }}</a>
+                            <button class="danger-btn delete-image-btn" data-folder="processed" data-filename="{{ img }}">Delete</button>
+                        </li>
+                    {% else %}
+                        <li class="list-empty">No processed images.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- Settings Modal (frontend-only) -->
+    <div class="modal-overlay" id="settingsOverlay" hidden></div>
+    <section class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+        <div class="modal-head">
+            <h2 id="settingsTitle">Settings</h2>
+            <button class="icon-btn" type="button" data-action="close-settings" aria-label="Close settings">
+                <span aria-hidden="true">✕</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-card">
+                <h3>Admin</h3>
+                <p class="muted">Use this panel to manage users and uploaded/processed files.</p>
+            </div>
+            <div class="modal-card">
+                <h3>Keyboard</h3>
+                <p class="muted"><strong>Esc</strong> closes the sidebar and this dialog.</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/ui-shell.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

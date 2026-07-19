@@ -1,0 +1,178 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    min-height: 100vh;
+    color: #f8fafc;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    overflow-x: hidden;
+}
+
+/* Subtle neon blobs (premium, lightweight) */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    inset: -30vh -30vw;
+    pointer-events: none;
+    z-index: -1;
+    background:
+        radial-gradient(closest-side at 20% 25%, rgba(99, 102, 241, 0.22), transparent 62%),
+        radial-gradient(closest-side at 80% 70%, rgba(34, 211, 238, 0.16), transparent 62%),
+        radial-gradient(closest-side at 55% 10%, rgba(236, 72, 153, 0.12), transparent 58%);
+    filter: blur(8px);
+}
+
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 430px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 20px;
+    box-shadow: 0 18px 55px rgba(0, 0, 0, 0.35);
+    padding: 30px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Soft glow border accent */
+.auth-card::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background:
+        radial-gradient(60% 70% at 20% 10%, rgba(99, 102, 241, 0.22), transparent 60%),
+        radial-gradient(60% 70% at 80% 90%, rgba(34, 211, 238, 0.16), transparent 60%);
+    filter: blur(12px);
+    opacity: 0.75;
+    pointer-events: none;
+}
+
+.auth-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.brand-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    margin-bottom: 12px;
+}
+
+h1 {
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: rgba(226, 232, 240, 0.82);
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: rgba(248, 250, 252, 0.92);
+}
+
+input {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    outline: none;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: #f8fafc;
+}
+
+input:focus {
+    box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.28);
+    border-color: rgba(34, 211, 238, 0.35);
+}
+
+.btn-primary {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 6px;
+    background: linear-gradient(135deg, #6366f1, #22d3ee);
+    color: #06101a;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 14px 44px rgba(34, 211, 238, 0.18), 0 0 0 1px rgba(34, 211, 238, 0.12) inset;
+}
+
+.alert {
+    margin-bottom: 14px;
+    border-radius: 10px;
+    background: rgba(239, 68, 68, 0.16);
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    color: #ffe8e8;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+.foot-text,
+.hint-text {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.9rem;
+}
+
+.hint-text {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.8rem;
+}
+
+a {
+    color: rgba(34, 211, 238, 0.95);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 22px;
+        border-radius: 16px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,62 @@
+/* =========================================================
+   AniGravity UI — entry stylesheet
+   Keep this file as the stable entrypoint for templates that
+   already reference `css/dashboard.css` (e.g. `admin.html`).
+
+   CSS is split into:
+   - `layout.css`: shell + responsive layout
+   - `components.css`: cards/buttons/sections
+   - `animations.css`: motion + loader + mic pulse
+   ========================================================= */
+
+@import url("./layout.css");
+@import url("./components.css");
+@import url("./animations.css");
+
+/* Admin list styles + danger buttons (used in `admin.html`) */
+.admin-grid { grid-template-columns: 1fr; }
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.list-item a {
+  color: rgba(34, 211, 238, 0.92);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.list-item a:hover {
+  text-decoration: underline;
+}
+
+.list-empty {
+  color: var(--muted);
+  padding: 10px 2px;
+}
+
+.danger-btn {
+  background: rgba(239, 68, 68, 0.14);
+  color: rgba(254, 202, 202, 0.95);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: 10px 12px;
+}
+
+.danger-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 40px rgba(239, 68, 68, 0.12);
+}

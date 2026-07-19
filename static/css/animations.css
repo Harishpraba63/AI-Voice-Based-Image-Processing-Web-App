@@ -1,0 +1,87 @@
+/* =========================================================
+   AniGravity UI — Animations
+   - Fade-in cards, mic pulse, spinner
+   ========================================================= */
+
+/* Smooth default transitions (avoid heavy motion) */
+@media (prefers-reduced-motion: no-preference) {
+  .card {
+    animation: fadeUp 0.65s ease forwards;
+    opacity: 0;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.06s; }
+  .card:nth-child(2) { animation-delay: 0.12s; }
+  .card:nth-child(3) { animation-delay: 0.18s; }
+  .card:nth-child(4) { animation-delay: 0.24s; }
+  .card:nth-child(5) { animation-delay: 0.30s; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 0.75; }
+  100% { transform: scale(1.85); opacity: 0; }
+}
+
+/* Voice button "listening" state (JS toggles .pulsing) */
+.btn-voice.pulsing::before,
+.btn-voice.pulsing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 30% 30%, rgba(34, 211, 238, 0.55), rgba(99, 102, 241, 0.25), transparent 70%);
+  animation: pulseRing 1.35s ease-out infinite;
+  z-index: -1;
+}
+
+.btn-voice.pulsing::after {
+  animation-delay: 0.35s;
+  opacity: 0.6;
+}
+
+/* Sidebar slide (only on mobile) */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .sidebar {
+    transition: transform 0.35s ease;
+  }
+}
+
+/* Loader */
+#loader {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(2, 6, 23, 0.58);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+}
+
+#loader.show {
+  display: flex;
+}
+
+#loader .spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 4px solid rgba(255, 255, 255, 0.12);
+  border-top-color: rgba(34, 211, 238, 0.92);
+  box-shadow: 0 0 28px rgba(34, 211, 238, 0.18);
+  animation: spin 1s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AI Image Processor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
+        <div class="sidebar-logo">AI Processor</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('dashboard') }}" class="active"><span>⚡</span> Dashboard</a></li>
+            {% if username == 'admin' %}
+            <li><a href="{{ url_for('admin_dashboard') }}"><span>🛡️</span> Admin Panel</a></li>
+            {% endif %}
+            <li><a href="#" data-action="open-settings"><span>⚙️</span> Settings</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p class="muted">Version 2.0</p>
+        </div>
+    </aside>
+
+    <!-- Mobile overlay (tap to close sidebar) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" hidden></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="icon-btn sidebar-toggle" id="sidebarToggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+                    <span class="hamburger" aria-hidden="true"></span>
+                </button>
+                <div class="title-wrap">
+                    <h1>AI Image Processor</h1>
+                    <p class="muted topbar-subtitle">Modern dashboard</p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="user-chip" aria-label="User">
+                    <span class="user-avatar" aria-hidden="true">{{ (username[:1] | upper) if username else 'U' }}</span>
+                    <span class="user-info">Welcome, {{ username }}</span>
+                </div>
+                <a class="btn-outline" href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="dashboard-grid">
+            <!-- Upload Card -->
+            <section class="card">
+                <h2>1) Upload Image</h2>
+                <div class="upload-zone" id="dropZone">
+                    <span class="upload-icon">📁</span>
+                    <p>Drag & Drop your image here</p>
+                    <p class="muted">or click to browse</p>
+                    <input id="imageInput" type="file" accept="image/*">
+                </div>
+                <button id="uploadBtn" class="btn-primary">Upload Image</button>
+                <p id="uploadStatus" class="status-text"></p>
+            </section>
+
+            <!-- Pre-defined Operations Card -->
+            <section class="card">
+                <h2>2) Process Controls</h2>
+                <div class="buttons-wrap">
+                    <button class="op-btn" data-op="grayscale">Grayscale</button>
+                    <button class="op-btn" data-op="brightness">Brightness +</button>
+                    <button class="op-btn" data-op="contrast">Contrast +</button>
+                    <button class="op-btn" data-op="blur">Gaussian Blur</button>
+                    <button class="op-btn" data-op="edge">Edge Detect</button>
+                    <button class="op-btn" data-op="negative">Negative</button>
+                    <button class="op-btn" data-op="resize">Resize</button>
+                    <button class="op-btn" data-op="rotate">Rotate 90</button>
+                    <button class="op-btn" data-op="flip">Flip</button>
+                    <button class="op-btn" data-op="noise">Noise Removal</button>
+                    <button class="op-btn" data-op="face">Face Detect</button>
+                </div>
+            </section>
+
+            <!-- Voice Card -->
+            <section class="card">
+                <h2>3) Voice Command</h2>
+                <p class="muted">Live voice: "make grayscale", "detect edges", "blur image".</p>
+                <div class="voice-row">
+                    <button id="voiceBtn" class="btn-voice" type="button">🎤</button>
+                    <span id="voiceText" class="status-text">Ready</span>
+                </div>
+                <button id="runVoiceBtn" class="btn-primary">Apply Recognized Command</button>
+            </section>
+
+            <!-- Audio File Card -->
+            <section class="card">
+                <h2>4) Audio Upload</h2>
+                <p class="muted">Upload a `.wav` file (speech command).</p>
+                <div class="audio-sect">
+                    <input id="audioInput" type="file" accept=".wav,audio/wav">
+                    <button id="audioBtn" class="btn-primary">🎧 Process Audio</button>
+                </div>
+                <p id="audioStatus" class="status-text"></p>
+            </section>
+
+            <!-- Image Preview Card -->
+            <section class="card image-card">
+                <h2>Image Comparison</h2>
+                <div class="preview-grid">
+                    <div class="preview-box">
+                        <h3>Original</h3>
+                        <img id="originalPreview" class="preview-img" alt="Original preview">
+                    </div>
+                    <div class="preview-box">
+                        <h3>Processed</h3>
+                        <img id="processedPreview" class="preview-img" alt="Processed preview">
+                    </div>
+                </div>
+                <a id="downloadBtn" class="btn-primary download disabled" href="#" download>Download Result</a>
+                <p id="processStatus" class="status-text"></p>
+            </section>
+        </main>
+    </div>
+
+    <!-- Settings Modal (frontend-only) -->
+    <div class="modal-overlay" id="settingsOverlay" hidden></div>
+    <section class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+        <div class="modal-head">
+            <h2 id="settingsTitle">Settings</h2>
+            <button class="icon-btn" type="button" data-action="close-settings" aria-label="Close settings">
+                <span aria-hidden="true">✕</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-card">
+                <h3>Tips</h3>
+                <p class="muted">Upload an image first, then apply operations or voice/audio commands.</p>
+            </div>
+            <div class="modal-card">
+                <h3>Keyboard</h3>
+                <p class="muted"><strong>Esc</strong> closes the sidebar and this dialog.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Screen Loader Overlay -->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/ui-shell.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
